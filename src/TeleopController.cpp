@@ -48,7 +48,7 @@ void TeleopController::commandPublishLoop()
 {
     // TODO: put this in a config file 
     // Desired frequency in Hz
-    const double frequency = 1.0;
+    const double frequency = 25.0;
     const std::chrono::duration<double> loop_duration(1.0 / frequency);
 
     auto commsHandler = RosTopicManager::getInstance(); 

@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(abv_idl REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(SFML COMPONENTS window REQUIRED)
 #find_package(sfml REQUIRED)
 #find_package(yaml-cpp REQUIRED)
 #find_package(eigen REQUIRED)
@@ -28,6 +29,7 @@ include_directories(${PROJECT_NAME}
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 ament_target_dependencies(${PROJECT_NAME} rclcpp abv_idl Eigen3)
+target_link_libraries(${PROJECT_NAME} sfml-window )
 
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME}
