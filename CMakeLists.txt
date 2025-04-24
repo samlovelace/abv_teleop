@@ -27,6 +27,8 @@ include_directories(${PROJECT_NAME}
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+ament_target_dependencies(${PROJECT_NAME} rclcpp abv_idl Eigen3)
+
 install(TARGETS ${PROJECT_NAME}
   DESTINATION lib/${PROJECT_NAME}
 )

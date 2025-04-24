@@ -2,10 +2,11 @@
 #define TELEOPCONTROLLER_H
  
 #include <memory> 
-#include "IControlDevice.h"
 #include <thread> 
 #include <mutex> 
- 
+
+#include "IControlDevice.h"
+
 class TeleopController 
 { 
 public:
