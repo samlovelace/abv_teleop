@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <iostream> 
 
-SfmlControlDevice::SfmlControlDevice()
+SfmlControlDevice::SfmlControlDevice() : mFirstConnected(false)
 {
 
 }
@@ -69,6 +69,12 @@ sf::Vector2i SfmlControlDevice::getThrustDirection(int joystickId)
     if (!sf::Joystick::isConnected(joystickId))
         return {0, 0};
 
+    if(!mFirstConnected)
+    {
+        mFirstConnected = true; 
+        std::cout << "Game Controller connected! Use the left joystick to move the vehicle fwd/back and left/right" << std::endl; 
+    }
+
     float xRaw = sf::Joystick::getAxisPosition(joystickId, sf::Joystick::X); // right = +
     float yRaw = sf::Joystick::getAxisPosition(joystickId, sf::Joystick::Y); // down = +
 
@@ -80,8 +86,8 @@ sf::Vector2i SfmlControlDevice::getThrustDirection(int joystickId)
     float yNorm = yRaw / 100.f;
 
     // Snap to discrete thrust values
-    int xSnap = snapAxis(xNorm);
-    int ySnap = snapAxis(yNorm);
+    //int xSnap = snapAxis(xNorm);
+    //int ySnap = snapAxis(yNorm);
 
-    return {xSnap, ySnap};
+    return {xNorm, yNorm};
 }

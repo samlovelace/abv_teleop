@@ -12,7 +12,7 @@ namespace CommsUtils
         vec.set__x(aData[0]); 
         vec.set__y(aData[1]); 
         vec.set__yaw(aData[2]);  
-        cmd.set__type("velocity"); 
+        cmd.set__type("thruster"); 
         cmd.set__data(vec); 
 
         return cmd; 
