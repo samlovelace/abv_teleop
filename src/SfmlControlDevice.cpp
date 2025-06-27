@@ -5,7 +5,13 @@
 
 SfmlControlDevice::SfmlControlDevice() : mFirstConnected(false)
 {
+    // In constructor
+    mWindow.create(sf::VideoMode(50, 50), "teleop");
 
+    // HACKY HACK HACK 
+    Eigen::VectorXd cmd(3);
+    cmd << 0, 0, 0; 
+    setCommand(cmd); 
 }
 
 SfmlControlDevice::~SfmlControlDevice()
@@ -14,35 +20,44 @@ SfmlControlDevice::~SfmlControlDevice()
 }
 
 bool SfmlControlDevice::handleInput()
-{ 
-    // HACKY HACK HACK 
-    Eigen::VectorXd cmd(3);
-    cmd << 0, 0, 0; 
-    setCommand(cmd); 
-
-    sf::Window window(sf::VideoMode(50, 50), "teleop"); 
-
-    while(window.isOpen())
+{
+    while (mWindow.isOpen())
     {
-        sf::Event event; 
-        while(window.pollEvent(event))
+        sf::Event event;
+        while (mWindow.pollEvent(event))
         {
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close(); 
-                break;
-            default:
-                break;
-            }
+            if (event.type == sf::Event::Closed)
+                mWindow.close();
         }
 
-        sf::Vector2i thrustDir = getThrustDirection(0); 
+        sf::Vector2i thrustDir{0, 0};
+
+        // Check keyboard state continuously
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            thrustDir.x += 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            thrustDir.x -= 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            thrustDir.y -= 1;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            thrustDir.y += 1;
+
+        if (sf::Joystick::isConnected(0))
+        {
+            thrustDir = getThrustDirection(0);
+        }
+
         Eigen::VectorXd cmd(3);
-        cmd << thrustDir.x, thrustDir.y, 0; 
-        appendCommand(cmd); 
-    } 
+        cmd << thrustDir.x, thrustDir.y, 0;
+        appendCommand(cmd);
+
+        mWindow.clear();
+        mWindow.display();
+
+    }
+    return true;
 }
+
 
 void SfmlControlDevice::appendCommand(Eigen::VectorXd anUpdateCmd)
 {
