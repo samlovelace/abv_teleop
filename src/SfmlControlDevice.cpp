@@ -30,7 +30,7 @@ bool SfmlControlDevice::handleInput()
                 mWindow.close();
         }
 
-        sf::Vector2i thrustDir{0, 0};
+        sf::Vector3i thrustDir{0, 0, 0};
 
         // Check keyboard state continuously
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -41,6 +41,10 @@ bool SfmlControlDevice::handleInput()
             thrustDir.y -= 1;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             thrustDir.y += 1;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+            thrustDir.z += 1;
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+            thrustDir.z -= 1; 
 
         if (sf::Joystick::isConnected(0))
         {
@@ -48,7 +52,7 @@ bool SfmlControlDevice::handleInput()
         }
 
         Eigen::VectorXd cmd(3);
-        cmd << thrustDir.x, thrustDir.y, 0;
+        cmd << thrustDir.x, thrustDir.y, thrustDir.z;
         appendCommand(cmd);
 
         mWindow.clear();
@@ -79,10 +83,10 @@ int SfmlControlDevice::snapAxis(float value, float threshold)
     return 0;
 }
 
-sf::Vector2i SfmlControlDevice::getThrustDirection(int joystickId) 
+sf::Vector3i SfmlControlDevice::getThrustDirection(int joystickId) 
 {
     if (!sf::Joystick::isConnected(joystickId))
-        return {0, 0};
+        return {0, 0, 0};
 
     if(!mFirstConnected)
     {
@@ -104,5 +108,5 @@ sf::Vector2i SfmlControlDevice::getThrustDirection(int joystickId)
     //int xSnap = snapAxis(xNorm);
     //int ySnap = snapAxis(yNorm);
 
-    return {xNorm, yNorm};
+    return {xNorm, yNorm, 0};
 }

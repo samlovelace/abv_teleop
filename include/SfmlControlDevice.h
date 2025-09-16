@@ -16,7 +16,7 @@ private:
 
     sf::RenderWindow mWindow;
     void appendCommand(Eigen::VectorXd anUpdateCmd); 
-    sf::Vector2i getThrustDirection(int joystickId); 
+    sf::Vector3i getThrustDirection(int joystickId); 
     int snapAxis(float value, float threshold = 0.5f);
     bool mFirstConnected; 
 
