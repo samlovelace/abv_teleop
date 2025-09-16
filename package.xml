@@ -10,7 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>rclcpp</depend>
-  <depend>abv_idl</depend>
+  <depend>robot_idl</depend>
   <depend>sfml</depend>
   <depend>yaml-cpp</depend>
   <depend>eigen</depend>

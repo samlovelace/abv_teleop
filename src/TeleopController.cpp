@@ -58,7 +58,7 @@ void TeleopController::commandPublishLoop()
         auto start = std::chrono::high_resolution_clock::now(); 
         auto data = mControlDevice->getCommand(); 
 
-        commsHandler->publishMessage<abv_idl::msg::AbvCommand>("abv_command", CommsUtils::commandMsgToIdl(data)); 
+        commsHandler->publishMessage<robot_idl::msg::AbvCommand>("abv_command", CommsUtils::commandMsgToIdl(data)); 
 
         // Calculate the time taken for the loop iteration
         auto end = std::chrono::high_resolution_clock::now();

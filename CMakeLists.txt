@@ -8,7 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(abv_idl REQUIRED)
+find_package(robot_idl REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(SFML COMPONENTS window graphics REQUIRED)
 #find_package(sfml REQUIRED)
@@ -28,7 +28,7 @@ include_directories(${PROJECT_NAME}
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-ament_target_dependencies(${PROJECT_NAME} rclcpp abv_idl Eigen3)
+ament_target_dependencies(${PROJECT_NAME} rclcpp robot_idl Eigen3)
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-graphics )
 
 install(TARGETS ${PROJECT_NAME}
