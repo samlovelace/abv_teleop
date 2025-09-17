@@ -88,7 +88,7 @@ sf::Vector3i SfmlControlDevice::getThrustDirection(int joystickId)
     if (!sf::Joystick::isConnected(joystickId))
         return {0, 0, 0};
 
-    if(!mFirstConnected)
+    if (!mFirstConnected)
     {
         mFirstConnected = true; 
         std::cout << "Game Controller connected! Use the left joystick to move the vehicle fwd/back and left/right" << std::endl; 
@@ -96,17 +96,18 @@ sf::Vector3i SfmlControlDevice::getThrustDirection(int joystickId)
 
     float xRaw = sf::Joystick::getAxisPosition(joystickId, sf::Joystick::X); // right = +
     float yRaw = sf::Joystick::getAxisPosition(joystickId, sf::Joystick::Y); // down = +
+    yRaw = -yRaw; // Flip Y axis
 
-    // Flip Y axis to make up = positive (optional, depends on your world)
-    yRaw = -yRaw;
-
-    // Normalize to range [-1.0, 1.0]
     float xNorm = xRaw / 100.f;
     float yNorm = yRaw / 100.f;
 
-    // Snap to discrete thrust values
-    //int xSnap = snapAxis(xNorm);
-    //int ySnap = snapAxis(yNorm);
+    int zThrust = 0;
 
-    return {xNorm, yNorm, 0};
+    if (sf::Joystick::isButtonPressed(joystickId, sf::Joystick::PovX)) // L1 / LB    
+        zThrust -= 1;
+    
+    if (sf::Joystick::isButtonPressed(joystickId, sf::Joystick::PovY)) // R1 / RB
+        zThrust += 1;
+
+    return {snapAxis(xNorm, 0.2f), snapAxis(yNorm, 0.2f), zThrust};
 }
